@@ -30,3 +30,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+#phpstorm
+/.idea
+
+#lock files
+package-lock.json
+yarn.lock

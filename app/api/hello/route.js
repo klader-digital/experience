@@ -1,3 +1,6 @@
 export async function GET(request) {
-  return new Response('Hello, Next.js!')
+  const data = {
+    name: 'World',
+  }
+  return new Response(JSON.stringify(data))
 }
