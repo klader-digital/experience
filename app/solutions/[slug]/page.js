@@ -1,16 +1,6 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 
-export async function generateStaticParams() {
-  const posts = await fetch('http://localhost:3000/api/solutions').then((res) =>
-    res.json()
-  )
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
-}
-
 async function getPost(slug) {
   return await fetch(`http://localhost:3000/api/solutions/?slug=${slug}`).then(
     (res) => res.json()

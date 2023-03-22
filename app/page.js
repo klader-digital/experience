@@ -192,29 +192,29 @@ export default function Home() {
               companies to innovate and build even more efficient products.
             </p>
           </div>
-          {/*<Image*/}
-          {/*  className='absolute left-4 top-1/2 aspect-[3/2] scale-50 object-cover lg:scale-100'*/}
-          {/*  src='https://images.unsplash.com/photo-1501522774256-bd04816aaf24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'*/}
-          {/*  alt=''*/}
-          {/*  width={440}*/}
-          {/*  height={360}*/}
-          {/*/>*/}
+          <Image
+            className="absolute left-4 top-1/2 aspect-[3/2] scale-50 object-cover lg:scale-100"
+            src="https://images.unsplash.com/photo-1501522774256-bd04816aaf24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            alt=""
+            width={440}
+            height={360}
+          />
 
-          {/*<Image*/}
-          {/*  className='absolute left-1/4 bottom-1/2 -z-20 aspect-[1/1] object-cover'*/}
-          {/*  src='https://images.unsplash.com/photo-1532356884227-66d7c0e9e4c2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'*/}
-          {/*  alt=''*/}
-          {/*  width={320}*/}
-          {/*  height={320}*/}
-          {/*/>*/}
+          <Image
+            className="absolute left-1/4 bottom-1/2 -z-20 aspect-[1/1] object-cover"
+            src="https://images.unsplash.com/photo-1532356884227-66d7c0e9e4c2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            alt=""
+            width={320}
+            height={320}
+          />
 
-          {/*<Image*/}
-          {/*  className='absolute right-[5%] top-1/4 -z-10 aspect-[1/1] object-contain'*/}
-          {/*  src='https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'*/}
-          {/*  alt=''*/}
-          {/*  width={440}*/}
-          {/*  height={360}*/}
-          {/*/>*/}
+          <Image
+            className="absolute right-[5%] top-1/4 -z-10 aspect-[1/1] object-contain"
+            src="https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+            alt=""
+            width={440}
+            height={360}
+          />
         </article>
         <article
           id="connections"
