@@ -10,14 +10,20 @@
   },
   "dependencies": {
     "@next/font": "^13.2.4",
+    "@react-three/drei": "9.46.7",
+    "@react-three/fiber": "8.9.1",
+    "@react-three/postprocessing": "2.7.0",
     "@studio-freight/lenis": "^1.0.4",
     "@studio-freight/react-lenis": "^0.0.12",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "gsap": "^3.11.5",
+    "leva": "^0.9.34",
     "next": "13.2.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "split-type": "^0.3.3",
+    "three": "0.148.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

@@ -46,13 +46,9 @@ h6 {
     @apply font-display uppercase font-bold;
 }
 
-/*.title {*/
-/*    @apply text-6xl lg:leading-[0.8275] lg:text-9xl mb-5 overflow-hidden;*/
+/*.description {*/
+/*    @apply text-lg lg:text-xl;*/
 /*}*/
-
-.description {
-    @apply text-lg lg:text-xl;
-}
 
 .lenis.lenis-smooth {
     scroll-behavior: auto;
@@ -68,4 +64,46 @@ html.lenis {
 
 .lenis.lenis-stopped {
     overflow: hidden;
+}
+
+main.main {
+    @apply transition duration-500 ease-in-out;
+    animation: circle 2s cubic-bezier(0.11, 0.46, 0.26, 1.02) forwards;
+}
+
+@keyframes circle {
+    0% {
+        clip-path: circle(0% at 50% 50%);
+    }
+    100% {
+        clip-path: circle(100% at 50% 50%);
+    }
+}
+
+.blob {
+    position: fixed;
+    pointer-events: none;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50%;
+}
+
+.blob:nth-child(1) {
+    top: 20%;
+    left: -25vw;
+    background-image: radial-gradient(circle, rgba(59, 216, 87, 0.1) 0%, transparent 50%);
+}
+
+.blob:nth-child(2) {
+    top: 30%;
+    right: -25vw;
+    background-image: radial-gradient(circle, rgba(59, 216, 87, 0.2) 0%, transparent 50%);
+
+}
+
+.blob:nth-child(2) {
+    top: -50vh;
+    right: 0;
+    background-image: radial-gradient(circle, rgba(59, 216, 87, 0.2) 0%, transparent 50%);
+
 }

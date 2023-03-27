@@ -6,9 +6,11 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState } from 'react'
 import Stories from '@/components/stories'
 import Solutions from '@/components/solutions'
+import Scene from '@/app/scene'
+import SplitType from 'split-type'
 
 export default function Home() {
   const [stories, setStories] = useState(null)
@@ -23,11 +25,87 @@ export default function Home() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    fetch('http://localhost:3000/api/stories')
+    // infinite animate blob position
+    gsap.to('.blob', {
+      x: 'random(-300, 300)',
+      y: 'random(-300, 300)',
+      scale: Math.random() + 0.5,
+      ease: 'none',
+      duration: 6,
+      repeat: -1,
+      repeatRefresh: true,
+    })
+
+    gsap.utils.toArray('.title').forEach((title, i) => {
+      const tl = gsap.timeline({
+        paused: true,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: title.closest('article'),
+          start: 'top center',
+          end: 'bottom 80%',
+          endTrigger: title.closest('article'),
+        },
+      })
+
+      const split = new SplitType(title, {
+        types: 'words',
+        tagName: 'span',
+        wordClass: 'translate-y-10 opacity-0',
+      })
+
+      gsap.to(split.words, {
+        y: 0,
+        opacity: 1,
+        stagger: {
+          amount: 0.5,
+        },
+        duration: 1,
+        delay: 2,
+        ease: 'power4.out',
+      })
+    })
+
+    gsap.utils.toArray('.description').forEach((paragraph) => {
+      const tl = gsap.timeline({
+        paused: true,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: paragraph.closest('article'),
+          start: 'top center',
+          end: 'bottom 80%',
+          endTrigger: paragraph.closest('article'),
+        },
+      })
+
+      const delay = paragraph.previousElementSibling?.classList.contains(
+        'title'
+      )
+        ? 1.5
+        : 0
+      const split = new SplitType(paragraph, {
+        types: 'words, chars',
+        tagName: 'span',
+      })
+
+      tl.from(
+        split.chars,
+        {
+          yPercent: 100,
+          opacity: 0,
+          stagger: { amount: 0.2 },
+          delay: delay,
+          // toggle action that will play or reverse the timeline
+        },
+        0
+      )
+    })
+
+    fetch('/api/stories')
       .then((res) => res.json())
       .then((data) => setStories(data))
 
-    fetch('http://localhost:3000/api/solutions')
+    fetch('/api/solutions')
       .then((res) => res.json())
       .then((data) => setSolutions(data))
   }, [])
@@ -38,16 +116,19 @@ export default function Home() {
       options={{
         duration: 1,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
-        direction: 'vertical', // vertical, horizontal
-        gestureDirection: 'vertical', // vertical, horizontal, both
-        smooth: true,
-        mouseMultiplier: 1,
+        orientation: 'vertical', // vertical, horizontal
+        gestureOrientation: 'vertical', // vertical, horizontal, both
+        smoothWheel: true,
+        wheelMultiplier: 1,
         smoothTouch: false,
         touchMultiplier: 2,
         infinite: false,
       }}
     >
-      <header className="pointer-events-none fixed flex w-full items-center justify-between p-4 lg:p-10">
+      <i className="blob"></i>
+      <i className="blob"></i>
+      <i className="blob"></i>
+      <header className="pointer-events-none fixed z-50 flex w-full items-center justify-between p-4 lg:p-10">
         <Link
           href={''}
           className="brand pointer-events-auto"
@@ -73,28 +154,29 @@ export default function Home() {
       </button>
 
       <main>
+        <Scene />
         <article
           id="journey"
-          className="container grid h-screen place-items-center text-center"
+          className="container relative z-10 grid h-screen place-items-center text-center"
           aria-labelledby="journey-title"
         >
           <div className="max-w-md lg:max-w-2xl">
             <h1
               id="journey-title"
-              className="mb-3 overflow-hidden text-6xl lg:mb-6 lg:text-9xl lg:leading-[0.8275]"
+              className="title mb-3 overflow-hidden text-6xl lg:mb-6 lg:text-9xl lg:leading-[0.8275]"
             >
               Journey from
               <br />
               micro to macro
             </h1>
-            <p className="lg:px-20 lg:text-xl">
+            <p className="description lg:px-20 lg:text-xl">
               Making an impact in creating successful electronics since 1993.
             </p>
           </div>
         </article>
         <article
           id="introduction"
-          className="container grid h-screen place-items-center text-center"
+          className="container relative z-10 grid h-screen place-items-center text-center"
           aria-labelledby="introduction-title"
         >
           <div className="max-w-lg lg:max-w-3xl">
@@ -115,7 +197,7 @@ export default function Home() {
         </article>
         <article
           id="solutions"
-          className="container grid h-screen place-items-center text-center"
+          className="container relative z-10 grid h-screen place-items-center text-center"
           aria-labelledby="introduction-title"
         >
           <div className="max-w-md lg:max-w-2xl">
@@ -133,7 +215,7 @@ export default function Home() {
         </article>
         <article
           id="stories"
-          className="container grid h-screen items-center justify-start"
+          className="container relative z-10 grid h-screen items-center justify-start"
           aria-labelledby="stories-title"
         >
           <div className="max-w-md lg:max-w-2xl">
@@ -154,7 +236,7 @@ export default function Home() {
         </article>
         <article
           id="expertise"
-          className="container grid h-screen items-end justify-end pb-40"
+          className="container relative z-10 grid h-screen items-end justify-end pb-40"
           aria-labelledby="expertise-title"
         >
           <div className="max-w-md lg:max-w-2xl">
@@ -218,7 +300,7 @@ export default function Home() {
         </article>
         <article
           id="connections"
-          className="container grid h-screen place-items-center text-center"
+          className="container relative z-10 grid h-screen place-items-center text-center"
           aria-labelledby="connections-title"
         >
           <div className="max-w-md lg:max-w-2xl">
@@ -237,14 +319,15 @@ export default function Home() {
           </div>
         </article>
       </main>
-      <footer className="container grid h-screen place-items-center text-center">
+      <footer className="container relative z-10 grid h-screen place-items-center text-center">
         <div className="">
           <h1 className="overflow-hidden text-6xl lg:mb-6 lg:text-9xl lg:leading-[0.8275]">
             READY TO BUILD A<br /> FUTURE WITH US
           </h1>
           <p className="mb-8 lg:px-20 lg:text-xl">We love to be challenged.</p>
           <a
-            href="#"
+            href="https://www.global-electronics.nl/contact"
+            target={'_blank'}
             className="inline-block bg-primary px-8 py-4 font-display text-xl font-medium uppercase leading-[0.8275]"
           >
             Get in touch
