@@ -13,7 +13,6 @@ export default function Scene() {
         gl={{ antialias: true, alpha: true }}
         camera={{ position: [0, 0, 5], far: 20 }}
       >
-        <WebGL />
         <EffectComposer>
           <Bloom
             luminanceThreshold={0.5}
@@ -21,6 +20,7 @@ export default function Scene() {
             height={300}
           />
           <Noise opacity={0.02} />
+          <WebGL />
         </EffectComposer>
       </Canvas>
       <Canvas

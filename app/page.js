@@ -6,16 +6,13 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
-import { useEffect, useState } from 'react'
+import { useEffect, Suspense } from 'react'
 import Stories from '@/components/stories'
 import Solutions from '@/components/solutions'
 import Scene from '@/app/scene'
-import SplitType from 'split-type'
+import { solutions, stories } from '@/app/lib'
 
 export default function Home() {
-  const [stories, setStories] = useState(null)
-  const [solutions, setSolutions] = useState(null)
-
   const lenis = useLenis(undefined, undefined, undefined)
 
   function handleClick(target) {
@@ -36,78 +33,53 @@ export default function Home() {
       repeatRefresh: true,
     })
 
-    gsap.utils.toArray('.title').forEach((title, i) => {
-      const tl = gsap.timeline({
-        paused: true,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: title.closest('article'),
-          start: 'top center',
-          end: 'bottom 80%',
-          endTrigger: title.closest('article'),
-        },
-      })
-
-      const split = new SplitType(title, {
-        types: 'words',
-        tagName: 'span',
-        wordClass: 'translate-y-10 opacity-0',
-      })
-
-      gsap.to(split.words, {
-        y: 0,
+    const tl = gsap.timeline({ paused: true })
+    tl.to(
+      '.video',
+      {
         opacity: 1,
-        stagger: {
-          amount: 0.5,
-        },
-        duration: 1,
-        delay: 2,
-        ease: 'power4.out',
-      })
-    })
-
-    gsap.utils.toArray('.description').forEach((paragraph) => {
-      const tl = gsap.timeline({
-        paused: true,
-        ease: 'power4.out',
+        ease: 'none',
         scrollTrigger: {
-          trigger: paragraph.closest('article'),
-          start: 'top center',
-          end: 'bottom 80%',
-          endTrigger: paragraph.closest('article'),
+          trigger: '#video',
+          start: 'top top',
+          end: '+=50% top',
+          scrub: true,
         },
-      })
-
-      const delay = paragraph.previousElementSibling?.classList.contains(
-        'title'
-      )
-        ? 1.5
-        : 0
-      const split = new SplitType(paragraph, {
-        types: 'words, chars',
-        tagName: 'span',
-      })
-
-      tl.from(
-        split.chars,
+      },
+      0
+    )
+      .to(
+        '.video',
         {
-          yPercent: 100,
-          opacity: 0,
-          stagger: { amount: 0.2 },
-          delay: delay,
-          // toggle action that will play or reverse the timeline
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#video',
+            start: 'top top',
+            end: '+=200% top',
+            scrub: true,
+            pin: true,
+          },
         },
         0
       )
-    })
+      .to(
+        '.video',
+        {
+          clipPath: 'circle(100%)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#video',
+            start: 'top top',
+            end: '+=100% top',
+            scrub: true,
+          },
+        },
+        0
+      )
 
-    fetch('/api/stories')
-      .then((res) => res.json())
-      .then((data) => setStories(data))
-
-    fetch('/api/solutions')
-      .then((res) => res.json())
-      .then((data) => setSolutions(data))
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill())
+    }
   }, [])
 
   return (
@@ -176,7 +148,7 @@ export default function Home() {
         </article>
         <article
           id="introduction"
-          className="container relative z-10 grid h-screen place-items-center text-center"
+          className="container relative z-10 grid h-screen place-items-center pt-[50vh] text-center"
           aria-labelledby="introduction-title"
         >
           <div className="max-w-lg lg:max-w-3xl">
@@ -195,6 +167,27 @@ export default function Home() {
             </p>
           </div>
         </article>
+        <article id="video" aria-labelledby="video-title">
+          <h1 id="video-title" className="sr-only">
+            A short video about our history
+          </h1>
+          <div className="mb-25 flex h-screen items-center justify-center text-center">
+            <div
+              className="video h-full w-full"
+              style={{ clipPath: 'circle(1%)', opacity: 0 }}
+            >
+              <video
+                className="h-full w-full object-cover"
+                autoPlay={true}
+                loop={true}
+                muted={true}
+              >
+                <source src="/video.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </article>
+
         <article
           id="solutions"
           className="container relative z-10 grid h-screen place-items-center text-center"
@@ -211,7 +204,9 @@ export default function Home() {
               From prototyping to assembling successful products.
             </p>
           </div>
-          <Solutions {...solutions} />
+          {/*<Suspense fallback={<div>Loading...</div>}>*/}
+          {/*  <Solutions {...solutions} />*/}
+          {/*</Suspense>*/}
         </article>
         <article
           id="stories"
@@ -225,7 +220,7 @@ export default function Home() {
             >
               Stories
             </h1>
-            <p className="lg:pr-40 lg:text-xl">
+            <p className="lg:text-xl">
               We assemble electronics for renowned clients in the high-tech
               market. Since 1993 we have evolved from EMS to a full fulfillment
               partner. As a committed partner, we realize the assembly of

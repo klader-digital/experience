@@ -7,6 +7,7 @@
     body {
         min-height: 100%;
         height: auto;
+        overflow: hidden;
     }
 }
 
@@ -45,10 +46,6 @@ h5,
 h6 {
     @apply font-display uppercase font-bold;
 }
-
-/*.description {*/
-/*    @apply text-lg lg:text-xl;*/
-/*}*/
 
 .lenis.lenis-smooth {
     scroll-behavior: auto;
